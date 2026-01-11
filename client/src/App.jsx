@@ -85,7 +85,7 @@ function App() {
                 mb: 2,
                 textShadow: '0 4px 20px rgba(0,0,0,0.3)',
                 letterSpacing: '-0.03em',
-                background: 'linear-gradient(180deg, #ffffff 0%, #f0f0f0 100%)',
+                background: 'linear-gradient(180deg, #00ff00 0%, #f0f0f0 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
