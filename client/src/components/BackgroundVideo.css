@@ -1,0 +1,42 @@
+/* Container for the entire background video setup */
+.video-background-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* The actual video element */
+.background-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Content that sits on top of the video */
+.content-overlay {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3); /* Optional dark overlay for better text readability */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .background-video {
+    /* On mobile, you might want to hide the video for performance */
+    display: none;
+  }
+  
+  .content-overlay {
+    /* Add a fallback background for mobile */
+    background-color: #1a1a1a;
+  }
+}
