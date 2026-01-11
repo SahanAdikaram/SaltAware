@@ -1,0 +1,33 @@
+# Dependency directories
+node_modules/
+
+# dotenv environment variable files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Coverage and build
+coverage
+*.lcov
+.nyc_output
+dist/
+build/
+
+# TypeScript
+*.tsbuildinfo
+
+# Compiled binary addons
+build/Release
+
+# Optional cache directories
+.cache/
+.parcel-cache
+.npm
+.eslintcache
+.stylelintcache
+
+# IDE and editor folders
+.vscode/
+.idea/

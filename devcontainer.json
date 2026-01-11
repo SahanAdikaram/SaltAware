@@ -1,0 +1,10 @@
+{
+  "name": "SaltAware---Recommender-System",
+  "postCreateCommand": "npm install && chmod +x node_modules/.bin/concurrently && cd client && npm install && chmod +x node_modules/.bin/react-scripts && cd ../server && npm install",
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": ["dbaeumer.vscode-eslint"]
+    }
+  }
+}
