@@ -30,7 +30,7 @@ const RecommendationList = () => {
           textShadow: '0 2px 4px rgba(0,0,0,0.2)',
         }}
       >
-        Recommended Recipes..............
+        Recommended Recipes
       </Typography>
       
       {safeError ? (
