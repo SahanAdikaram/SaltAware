@@ -12,7 +12,7 @@ jobs:
   # ----------------------------------------------------------------------------
 
   server-ci:
-    name: Server Unit & Integration Tests
+    name: Server CI - Unit & Integration Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -34,7 +34,7 @@ jobs:
           npm test
 
   client-ci:
-    name: Client Tests & Build
+    name: Client CI - Tests & Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -49,6 +49,11 @@ jobs:
         run: |
           cd client
           npm install
+
+      - name: Run Static Analysis (Linting)
+        run: |
+          cd client
+          npm run lint || echo "Lint warnings found, continuing..."
 
       - name: Run Component Tests
         run: |
