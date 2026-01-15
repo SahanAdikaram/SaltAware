@@ -12,7 +12,7 @@ jobs:
   # ----------------------------------------------------------------------------
 
   server-ci:
-    name: 🛡️ Server Integrity Check
+    name: Server CI - Unit & Integration Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -34,7 +34,7 @@ jobs:
           npm test
 
   client-ci:
-    name: 🛡️ Client Integrity Check
+    name: Client CI - Tests & Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -68,7 +68,7 @@ jobs:
   # ----------------------------------------------------------------------------
 
   deploy-server:
-    name: 🚀 Deploy Server
+    name: Deploy Server
     needs: server-ci
     runs-on: ubuntu-latest
     steps:
@@ -80,7 +80,7 @@ jobs:
           wait_deploy: true
 
   deploy-client:
-    name: 🚀 Deploy Client
+    name: Deploy Client
     needs: client-ci
     runs-on: ubuntu-latest
     steps:
