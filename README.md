@@ -32,12 +32,27 @@ The application is fully deployed and live on Render.
 
 ## 🔄 CI/CD Pipeline
 
-This project utilizes a **GitHub Actions** pipeline for automated testing and deployment to **Render**.
+This project utilizes an advanced **Stepped GitHub Actions Pipeline** that executes Server and Client workflows in parallel for maximum efficiency and safety.
 
-1.  **Trigger:** Pushing code to the `main` branch initiates the pipeline.
-2.  **Build & Test:**
-    * Installs dependencies for both Server and Client.
-    * Builds the React Client to ensure there are no syntax errors.
-3.  **Deployment:**
-    * If the build succeeds, the pipeline triggers a deployment on Render.
-    * It waits for the deployment to go **"Live"** before marking the job as successful.
+### 1. Trigger
+* Pushing code to the `main` branch automatically initiates the workflow.
+
+### 2. Stage I: Continuous Integration (Parallel Execution)
+The pipeline splits into two independent tracks to validate code integrity before deployment.
+
+**🛡️ Server Track (`server-ci`)**
+   * **Dependency Check:** Installs Node.js dependencies.
+   * **Unit Testing:** Validates data integrity of the local recipe database (`recipes.test.js`).
+   * **Integration Testing:** Uses **Supertest** to verify API endpoints (`GET /api/recipes`, `POST /api/recommend`) with mocked external calls.
+
+**🛡️ Client Track (`client-ci`)**
+   * **Component Testing:** Uses **React Testing Library** to verify UI logic (e.g., `IngredientSelector` interaction).
+   * **Static Analysis:** Runs **ESLint** to catch syntax errors and code quality issues.
+   * **Build Verification:** Compiles the React application (`npm run build`) to ensure the production bundle is error-free.
+
+### 3. Stage II: Continuous Deployment (CD)
+Deployment jobs are conditional—they only run if their respective CI stage passes.
+
+   * **Automated Deployment:** Triggers a deployment to **Render** via API.
+   * **Live Verification:** The pipeline actively polls the Render API and waits for the service to report a **"Live"** status.
+   * **Failure Protection:** If the deployment crashes or fails to go live, the GitHub Action marks the job as failed, preventing silent errors.
