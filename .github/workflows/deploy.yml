@@ -6,49 +6,85 @@ on:
       - main
 
 jobs:
-  # Job 1: Build and Test (The Gatekeeper)
-  build-and-test:
+  # ----------------------------------------------------------------------------
+  # STAGE 1: CONTINUOUS INTEGRATION (CI)
+  # These jobs run in parallel. If they fail, corresponding deployment stops.
+  # ----------------------------------------------------------------------------
+
+  server-ci:
+    name: 🛡️ Server Integrity Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup Node for Server
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-      
-      - name: Install Server Deps
+
+      - name: Install Server Dependencies
         run: |
           cd server
           npm install
 
-      - name: Install and Build Client
+      - name: Run Server Tests (Unit & Integration)
+        run: |
+          cd server
+          npm test
+
+  client-ci:
+    name: 🛡️ Client Integrity Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Client Dependencies
         run: |
           cd client
           npm install
+
+      - name: Run Component Tests
+        run: |
+          cd client
+          CI=true npm test
+
+      - name: Verify Production Build
+        run: |
+          cd client
           npm run build
         env:
-          CI: false
+          CI: false # Ignore warnings during build
 
-  # Job 2: Deploy Server
+  # ----------------------------------------------------------------------------
+  # STAGE 2: CONTINUOUS DEPLOYMENT (CD)
+  # These jobs only run if their respective CI job passes.
+  # ----------------------------------------------------------------------------
+
   deploy-server:
-    needs: build-and-test
+    name: 🚀 Deploy Server
+    needs: server-ci
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy Server to Render
+      - name: Trigger Render Deploy (Server)
         uses: JorgeLNJunior/render-deploy@v1.4.7
         with:
           service_id: ${{ secrets.RENDER_SERVICE_ID_SERVER }}
           api_key: ${{ secrets.RENDER_API_KEY }}
           wait_deploy: true
-          
-  # Job 3: Deploy Client
+
   deploy-client:
-    needs: build-and-test
+    name: 🚀 Deploy Client
+    needs: client-ci
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy Client to Render
+      - name: Trigger Render Deploy (Client)
         uses: JorgeLNJunior/render-deploy@v1.4.7
         with:
           service_id: ${{ secrets.RENDER_SERVICE_ID_CLIENT }}
